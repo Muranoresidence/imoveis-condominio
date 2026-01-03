@@ -10,25 +10,22 @@ fetch("https://script.google.com/macros/s/AKfycbzy1uvDp6N_G7yyFKNOr_41lX_D6rPGrK
       return;
     }
 
-    dados.forEach(i => {
-      const div = document.createElement("div");
-      div.className = "card";
+   dados.forEach(i => {
+  const div = document.createElement("div");
+  div.className = "card";
 
-      div.innerHTML = `
-        <h3>Lote ${i.Lote}</h3>
-        <p><strong>Tipo:</strong> ${i.Tipo}</p>
-        <p><strong>Quartos:</strong> ${i.Quarto}</p>
-        <p><strong>Valor:</strong> R$ ${i.Valor}</p>
-        <a href="https://wa.me/55${i.WhatsApp}" target="_blank">
-          Falar com o proprietário
-        </a>
-        ${i.LinkFotos && !i.LinkFotos.toLowerCase().includes("não") 
-          ? `<br><a href="${i.LinkFotos}" target="_blank">Ver fotos</a>` 
-          : ``}
-      `;
+  div.innerHTML = `
+    <h3>Lote ${i.Lote}</h3>
+    <p><strong>Tipo:</strong> ${i.Tipo}</p>
+    <p><strong>Quartos:</strong> ${i.Quarto}</p>
+    <p><strong>Valor:</strong> R$ ${i.Valor}</p>
+    <a href="https://wa.me/55${i.WhatsApp}" target="_blank">
+      Falar com o proprietário
+    </a>
+  `;
 
-      lista.appendChild(div);
-    });
+  lista.appendChild(div);
+});
   })
   .catch(err => {
     document.getElementById("lista").innerHTML =
@@ -36,3 +33,4 @@ fetch("https://script.google.com/macros/s/AKfycbzy1uvDp6N_G7yyFKNOr_41lX_D6rPGrK
     console.error(err);
   });
 </script>
+
