@@ -1,10 +1,11 @@
 <script>
 fetch("https://script.google.com/macros/s/AKfycbzy1uvDp6N_G7yyFKNOr_41lX_D6rPGrKwyoXnU3k3PWNz3Wioh0VcietrAlLQxte8hbw/exec")
-  .then(res => res.json())
+  .then(response => response.json())
   .then(dados => {
     const lista = document.getElementById("lista");
+    lista.innerHTML = "";
 
-    if (!dados.length) {
+    if (!dados || dados.length === 0) {
       lista.innerHTML = "<p>Nenhum imóvel disponível no momento.</p>";
       return;
     }
@@ -14,32 +15,24 @@ fetch("https://script.google.com/macros/s/AKfycbzy1uvDp6N_G7yyFKNOr_41lX_D6rPGrK
       div.className = "card";
 
       div.innerHTML = `
-        <h3>Lote ${i["Lote"]}</h3>
-        <p><strong>Tipo:</strong> ${i["Tipo"]}</p>
-        <p><strong>Quartos:</strong> ${i["Quarto"]}</p>
-        <p><strong>Valor:</strong> R$ ${i["Valor"]}</p>
-
-        <a href="https://wa.me/55${i["WhatsApp"]}" target="_blank">
+        <h3>Lote ${i.Lote}</h3>
+        <p><strong>Tipo:</strong> ${i.Tipo}</p>
+        <p><strong>Quartos:</strong> ${i.Quarto}</p>
+        <p><strong>Valor:</strong> R$ ${i.Valor}</p>
+        <a href="https://wa.me/55${i.WhatsApp}" target="_blank">
           Falar com o proprietário
         </a>
-
-        ${i["LinkFotos"] ? `
-          <br><a href="${i["LinkFotos"]}" target="_blank">Ver fotos</a>
-        ` : ``}
-        <hr>
+        ${i.LinkFotos && !i.LinkFotos.toLowerCase().includes("não") 
+          ? `<br><a href="${i.LinkFotos}" target="_blank">Ver fotos</a>` 
+          : ``}
       `;
 
       lista.appendChild(div);
     });
-  });
-</script>
-
+  })
+  .catch(err => {
+    document.getElementById("lista").innerHTML =
+      "<p>Erro ao carregar os imóveis.</p>";
     console.error(err);
   });
 </script>
-
-</body>
-</html>
-
-
-
