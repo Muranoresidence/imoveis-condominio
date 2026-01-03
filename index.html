@@ -1,75 +1,44 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <title>Imóveis Disponíveis</title>
-  <style>
-    body { font-family: Arial, sans-serif; }
-    .card {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 16px;
-      max-width: 420px;
-    }
-    .card h3 { margin-top: 0; }
-    .acoes a {
-      display: inline-block;
-      margin-right: 10px;
-      text-decoration: none;
-      color: #0066cc;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
-
-<h1>Casas disponíveis para venda e aluguel</h1>
-
-<div id="lista"></div>
-
 <script>
-fetch(https://script.google.com/macros/s/AKfycbzy1uvDp6N_G7yyFKNOr_41lX_D6rPGrKwyoXnU3k3PWNz3Wioh0VcietrAlLQxte8hbw/exec)
-  .then(response => response.json())
+fetch("https://script.google.com/macros/s/AKfycbzy1uvDp6N_G7yyFKNOr_41lX_D6rPGrKwyoXnU3k3PWNz3Wioh0VcietrAlLQxte8hbw/exec")
+  .then(res => res.json())
   .then(dados => {
     const lista = document.getElementById("lista");
 
-    if (dados.length === 0) {
+    if (!dados.length) {
       lista.innerHTML = "<p>Nenhum imóvel disponível no momento.</p>";
       return;
     }
 
-    dados.forEach(imovel => {
+    dados.forEach(i => {
       const div = document.createElement("div");
       div.className = "card";
 
       div.innerHTML = `
-        <h3>Lote ${imovel.Lote}</h3>
-        <p><strong>Tipo:</strong> ${imovel.Tipo}</p>
-        <p><strong>Quartos:</strong> ${imovel.Quartos}</p>
-        <p><strong>Valor:</strong> R$ ${imovel.Valor}</p>
+        <h3>Lote ${i["Lote"]}</h3>
+        <p><strong>Tipo:</strong> ${i["Tipo"]}</p>
+        <p><strong>Quartos:</strong> ${i["Quarto"]}</p>
+        <p><strong>Valor:</strong> R$ ${i["Valor"]}</p>
 
-        <div class="acoes">
-          <a href="https://wa.me/55${imovel.WhatsApp}" target="_blank">
-            Falar com o proprietário
-          </a>
-          ${imovel.LinkFotos ? `
-            <a href="${imovel.LinkFotos}" target="_blank">
-              Ver fotos
-            </a>` : ``}
-        </div>
+        <a href="https://wa.me/55${i["WhatsApp"]}" target="_blank">
+          Falar com o proprietário
+        </a>
+
+        ${i["LinkFotos"] ? `
+          <br><a href="${i["LinkFotos"]}" target="_blank">Ver fotos</a>
+        ` : ``}
+        <hr>
       `;
 
       lista.appendChild(div);
     });
-  })
-  .catch(err => {
-    document.getElementById("lista").innerHTML =
-      "<p>Erro ao carregar os imóveis.</p>";
+  });
+</script>
+
     console.error(err);
   });
 </script>
 
 </body>
 </html>
+
 
